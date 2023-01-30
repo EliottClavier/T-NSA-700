@@ -1,0 +1,17 @@
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Create Nginx configuration file
+  template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: "{{ vault_ansible_user }}"
+    group: "{{ vault_ansible_password }}"
+    mode: 0644
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted

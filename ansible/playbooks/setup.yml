@@ -1,0 +1,9 @@
+- name: Setup front
+  hosts: front_servers
+  become: true
+  vars_files:
+    - /ansible/vault.yml
+  tasks:
+    - include_role:
+        name: front
+        tasks_from: setup.yml

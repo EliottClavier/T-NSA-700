@@ -1,0 +1,2 @@
+ansible_host: "{{ vault_front_server_ip }}"
+nginx_server_name: "{{ vault_front_server_name }}"
