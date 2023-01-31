@@ -7,3 +7,13 @@
     - include_role:
         name: front
         tasks_from: setup.yml
+
+- name: Setup back
+  hosts: back_servers
+  become: true
+  vars_files:
+    - /ansible/vault.yml
+  tasks:
+    - include_role:
+        name: back
+        tasks_from: setup.yml

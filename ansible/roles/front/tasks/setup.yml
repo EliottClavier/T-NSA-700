@@ -5,11 +5,17 @@
 
 - name: Create Nginx configuration file
   template:
-    src: nginx.conf
-    dest: /etc/nginx/nginx.conf
+    src: front
+    dest: /etc/nginx/sites-available/front
     owner: "{{ vault_ansible_user }}"
     group: "{{ vault_ansible_password }}"
     mode: 0644
+
+- name: Create Nginx symbolic link
+  command: ln -sfn /etc/nginx/sites-available/front /etc/nginx/sites-enabled/
+
+- name: Delete default nginx.conf symbolic link
+  command: rm -f /etc/nginx/sites-enabled/default
 
 - name: Restart Nginx
   service:
