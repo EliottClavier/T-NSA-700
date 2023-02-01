@@ -7,8 +7,8 @@
   template:
     src: front
     dest: /etc/nginx/sites-available/front
-    owner: "{{ vault_ansible_user }}"
-    group: "{{ vault_ansible_password }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_password }}"
     mode: 0644
 
 - name: Create Nginx symbolic link
