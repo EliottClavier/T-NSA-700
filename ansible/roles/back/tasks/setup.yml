@@ -1,0 +1,36 @@
+- name: Install PHP 7.4 and PHP 7.4-FPM
+  apt:
+    name:
+      - php7.4
+      - php7.4-fpm
+      - php-mysql
+    state: present
+    
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Create Nginx configuration file
+  template:
+    src: back
+    dest: /etc/nginx/sites-available/back
+    owner: "{{ vault_ansible_user }}"
+    group: "{{ vault_ansible_password }}"
+    mode: 0644
+
+- name: Create Nginx symbolic link
+  command: ln -sfn /etc/nginx/sites-available/back /etc/nginx/sites-enabled/
+
+- name: Delete default nginx.conf symbolic link
+  command: rm -f /etc/nginx/sites-enabled/default
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: Restart php-fpm
+  service:
+    name: php7.4-fpm
+    state: restarted
