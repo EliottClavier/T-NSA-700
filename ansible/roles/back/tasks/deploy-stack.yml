@@ -1,0 +1,58 @@
+- name: Download back Artifact
+  get_url:
+    url: http://{{ nexus_server_address }}:{{ nexus_server_port }}/repository/maven-releases/backend/{{ artifact_id }}/{{ version }}/{{ artifact_id }}-{{ version }}.tar
+    dest: /var/www/{{ artifact_id }}-{{ version }}.tar
+
+# Temporaire
+- name: Create artifacts folder
+  command: mkdir -p /var/www/artifacts
+
+- name: Extract .tar archive
+  unarchive:
+    src: /var/www/{{ artifact_id }}-{{ version }}.tar
+    # Remove /artifacts
+    dest: /var/www/artifacts
+    remote_src: yes
+
+- name: Remove back folder (if it exists)
+  command: rm -rf /var/www/back
+
+- name: Rename back folder
+  command: mv /var/www/artifacts /var/www/back
+
+- name: Remove back folder
+  command: rm -rf /var/www/{{ artifact_id }}-{{ version }}.tar
+
+- name: Create .env file
+  template:
+    src: .env
+    dest: /var/www/back
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_password }}"
+    mode: 0644
+
+- name: Change back folder permissions
+  command: chmod -R 775 /var/www/back
+
+- name: Change back folder ownership
+  command: chown -R www-data:www-data /var/www/back
+
+- name: Clear Laravel
+  shell: | 
+    cd /var/www/back
+    php artisan config:cache
+    php artisan cache:clear
+    php artisan optimize:clear
+
+- name: Apply migrations
+  command: php /var/www/back/artisan migrate
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: Restart php-fpm
+  service:
+    name: php7.4-fpm
+    state: restarted

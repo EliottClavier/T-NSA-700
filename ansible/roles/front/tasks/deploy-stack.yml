@@ -8,11 +8,14 @@
     src: /var/www/html/{{ artifact_id }}-{{ version }}.tar
     dest: /var/www/html/
     remote_src: yes
+  
+- name: Remove front folder (if it exists)
+  command: rm -rf /var/www/html/front
 
 - name: Rename front folder
   command: mv /var/www/html/artifacts /var/www/html/front 
 
-- name: Rename front folder
+- name: Remove front folder
   command: rm -rf /var/www/html/{{ artifact_id }}-{{ version }}.tar
 
 - name: Restart Nginx
