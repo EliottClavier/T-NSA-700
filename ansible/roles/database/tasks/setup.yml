@@ -1,0 +1,51 @@
+- name: Install MariaDB
+  apt:
+    name: mariadb-server
+    state: present
+
+- name: Install python3-mysqldb 
+  apt:
+    name: python3-mysqldb
+    state: latest
+
+- name: Create my.cnf's directory
+  command: mkdir -p /home/{{ db_username }}
+
+- name: Configure MariaDB
+  template:
+    src: .my.cnf
+    dest: /home/{{ db_username }}/.my.cnf
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_password }}"
+    mode: 0644
+
+- name: Open MariaDB to back connection
+  command: sed -i 's/bind-address.*=.*127.0.0.1/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
+
+- name: Start and Enable MariaDB
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: Secure MariaDB
+  mysql_user:
+      name: "{{ db_username }}"
+      password: "{{ db_password }}"
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+      priv: '*.*:ALL,GRANT'
+      host: '%'
+      state: present
+
+- name: Create database
+  mysql_db:
+    name: "{{ db_database }}"
+    state: present
+    login_user: "{{ db_username }}"
+    login_password: "{{ db_password }}"
+
+- name: Reload MariaDB
+  service:
+    name: mariadb
+    state: restarted
+    enabled: yes

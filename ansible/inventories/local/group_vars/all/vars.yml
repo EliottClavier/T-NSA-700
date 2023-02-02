@@ -1,0 +1,4 @@
+ansible_connection: ssh
+ansible_user: "{{ vault_ansible_user }}"
+ansible_ssh_pass: "{{ vault_ansible_password }}"
+ansible_python_interpreter: /usr/bin/python3

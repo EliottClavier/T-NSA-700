@@ -1,0 +1,23 @@
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Create Nginx configuration file
+  template:
+    src: front
+    dest: /etc/nginx/sites-available/front
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_password }}"
+    mode: 0644
+
+- name: Create Nginx symbolic link
+  command: ln -sfn /etc/nginx/sites-available/front /etc/nginx/sites-enabled/
+
+- name: Delete default nginx.conf symbolic link
+  command: rm -f /etc/nginx/sites-enabled/default
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
