@@ -17,6 +17,9 @@
 - name: Delete default nginx.conf symbolic link
   command: rm -f /etc/nginx/sites-enabled/default
 
+- name: Enable automatic restart of Nginx service
+  command: systemctl enable nginx
+
 - name: Restart Nginx
   service:
     name: nginx

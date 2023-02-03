@@ -44,7 +44,10 @@
     login_user: "{{ db_username }}"
     login_password: "{{ db_password }}"
 
-- name: Reload MariaDB
+- name: Enable automatic restart of MariaDB service
+  command: systemctl enable mariadb
+
+- name: Restart MariaDB
   service:
     name: mariadb
     state: restarted
