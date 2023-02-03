@@ -1,7 +1,7 @@
 - name: Download back Artifact
   get_url:
     url: http://{{ nexus_server_address }}:{{ nexus_server_port }}/repository/maven-releases/backend/{{ artifact_id }}/{{ version }}/{{ artifact_id }}-{{ version }}.tar
-    dest: /var/www/{{ artifact_id }}-{{ version }}.tar
+    dest: /data/artifacts/{{ artifact_id }}-{{ version }}.tar
 
 # Temporaire
 - name: Create artifacts folder
@@ -9,7 +9,7 @@
 
 - name: Extract .tar archive
   unarchive:
-    src: /var/www/{{ artifact_id }}-{{ version }}.tar
+    src: /data/artifacts/{{ artifact_id }}-{{ version }}.tar
     # Remove /artifacts
     dest: /var/www/artifacts
     remote_src: yes
@@ -19,9 +19,6 @@
 
 - name: Rename back folder
   command: mv /var/www/artifacts /var/www/back
-
-- name: Remove back folder
-  command: rm -rf /var/www/{{ artifact_id }}-{{ version }}.tar
 
 - name: Create .env file
   template:

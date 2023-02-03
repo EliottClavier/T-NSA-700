@@ -3,6 +3,9 @@
     name: nginx
     state: present
 
+- name: Create artifacts folder
+  command: mkdir -p /data/artifacts
+
 - name: Create Nginx configuration file
   template:
     src: front
