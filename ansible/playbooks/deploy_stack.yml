@@ -9,7 +9,17 @@
   tasks:
     - include_role:
         name: front
-        tasks_from: deploy-stack.yml
+        tasks_from: deploy_stack.yml
+
+- name: Backup database
+  hosts: database_servers
+  become: true
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - include_role:
+        name: database
+        tasks_from: backup.yml
 
 - name: Deploy back
   hosts: back_servers
@@ -22,4 +32,4 @@
   tasks:
     - include_role:
         name: back
-        tasks_from: deploy-stack.yml
+        tasks_from: deploy_stack.yml

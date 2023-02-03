@@ -1,0 +1,17 @@
+- name: Create database backups directory
+  command: mkdir -p /data/backups/
+
+- name: Schedule daily backup
+  cron:
+    name: Backup MariaDB database
+    hour: "*/6"
+    job: mysqldump -u{{ db_username }} -p{{ db_password }} {{ db_database }} > /data/backups/{{ db_database }}-$(date +\%Y-\%m-\%d-\%H_\%M_\%S).sql
+
+- name: Enable automatic restart of CRON service
+  command: systemctl enable cron
+
+- name: Restart CRON
+  service:
+    name: cron
+    state: restarted
+    enabled: yes
