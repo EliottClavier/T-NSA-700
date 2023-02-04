@@ -1,0 +1,20 @@
+configs:
+
+    use: ""
+
+    server:
+      name: ""
+      public_ip: ""  
+        
+    front:
+      name: ""
+      public_ip: ""
+
+    back:
+      name: ""
+      public_ip: ""
+    
+    db:
+      name: ""
+      public_ip: ""
+        
