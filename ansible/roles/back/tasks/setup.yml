@@ -11,6 +11,15 @@
     name: nginx
     state: present
 
+- name: Create artifacts folder
+  command: mkdir -p /data/artifacts
+
+- name: Create prev_version.txt
+  shell: touch /data/prev_version.txt
+
+- name: Create current_version.txt
+  shell: touch /data/current_version.txt
+
 - name: Create Nginx configuration file
   template:
     src: back
@@ -24,6 +33,12 @@
 
 - name: Delete default nginx.conf symbolic link
   command: rm -f /etc/nginx/sites-enabled/default
+
+- name: Enable automatic restart of Nginx service
+  command: systemctl enable nginx
+
+- name: Enable automatic restart of php-fpm service
+  command: systemctl enable php7.4-fpm
 
 - name: Restart Nginx
   service:

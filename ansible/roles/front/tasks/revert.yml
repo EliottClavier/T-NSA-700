@@ -1,0 +1,41 @@
+- name: Read prev_version.txt
+  shell: cat /data/prev_version.txt
+  register: prev_version
+
+- name: Read current_version.txt
+  shell: cat /data/current_version.txt
+  register: current_version
+
+- name: Check if file is not present
+  stat:
+    path: /data/artifacts/{{ prev_version.stdout }}.tar.gz
+  register: file_status
+
+- name: Download front Artifact
+  get_url:
+    url: http://{{ nexus_server_address }}:{{ nexus_server_port }}/repository/maven-releases/frontend/{{ prev_version.stdout.split("-")[0] }}/{{ prev_version.stdout.split("-")[1] }}/{{ prev_version.stdout }}.tar.gz
+    dest: /data/artifacts/{{ prev_version.stdout }}.tar.gz
+  when: file_status.stat.exists == False or file_status.failed == True
+
+- name: Extract .tar.gz archive
+  unarchive:
+    src: /data/artifacts/{{ prev_version.stdout }}.tar.gz
+    dest: /var/www/html/
+    remote_src: yes
+  
+- name: Remove front folder (if it exists)
+  command: rm -rf /var/www/html/front
+
+- name: Rename front folder
+  command: mv /var/www/html/artifacts /var/www/html/front 
+
+- name: Switch the previous version
+  shell: echo {{ current_version.stdout }} > /data/prev_version.txt 
+
+- name: Switch the current version
+  shell: echo {{ prev_version.stdout }} > /data/current_version.txt 
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted

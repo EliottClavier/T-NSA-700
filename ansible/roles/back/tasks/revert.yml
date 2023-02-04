@@ -1,0 +1,70 @@
+- name: Read prev_version.txt
+  shell: cat /data/prev_version.txt
+  register: prev_version
+
+- name: Read current_version.txt
+  shell: cat /data/current_version.txt
+  register: current_version
+
+- name: Check if file is not present
+  stat:
+    path: /data/artifacts/{{ prev_version.stdout }}.tar.gz
+  register: file_status
+
+- name: Download back Artifact
+  get_url:
+    url: http://{{ nexus_server_address }}:{{ nexus_server_port }}/repository/maven-releases/backend/{{ prev_version.stdout.split("-")[0] }}/{{ prev_version.stdout.split("-")[1] }}/{{ prev_version.stdout }}.tar.gz
+    dest: /data/artifacts/{{ prev_version.stdout }}.tar.gz
+  when: file_status.stat.exists == False or file_status.failed == True
+
+- name: Extract .tar.gz archive
+  unarchive:
+    src: /data/artifacts/{{ prev_version.stdout }}.tar.gz
+    dest: /var/www/
+    remote_src: yes
+  
+- name: Remove back folder (if it exists)
+  command: rm -rf /var/www/back
+
+- name: Rename back folder
+  command: mv /var/www/artifacts /var/www/back 
+
+- name: Create .env file
+  template:
+    src: .env
+    dest: /var/www/back
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_password }}"
+    mode: 0644
+
+- name: Change back folder permissions
+  command: chmod -R 775 /var/www/back
+
+- name: Change back folder ownership
+  command: chown -R www-data:www-data /var/www/back
+
+- name: Clear Laravel
+  shell: | 
+    cd /var/www/back
+    php artisan config:cache
+    php artisan cache:clear
+    php artisan optimize:clear
+
+- name: Rollback and reapply migrations to the state of the previous version
+  command: php /var/www/back/artisan migrate:refresh
+
+- name: Switch the previous version
+  shell: echo {{ current_version.stdout }} > /data/prev_version.txt 
+
+- name: Switch the current version
+  shell: echo {{ prev_version.stdout }} > /data/current_version.txt 
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: Restart php-fpm
+  service:
+    name: php7.4-fpm
+    state: restarted

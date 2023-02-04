@@ -1,15 +1,15 @@
 - name: Download back Artifact
   get_url:
-    url: http://{{ nexus_server_address }}:{{ nexus_server_port }}/repository/maven-releases/backend/{{ artifact_id }}/{{ version }}/{{ artifact_id }}-{{ version }}.tar
-    dest: /var/www/{{ artifact_id }}-{{ version }}.tar
+    url: http://{{ nexus_server_address }}:{{ nexus_server_port }}/repository/maven-releases/backend/{{ artifact_id }}/{{ version }}/{{ artifact_id }}-{{ version }}.tar.gz
+    dest: /data/artifacts/{{ artifact_id }}-{{ version }}.tar.gz
 
 # Temporaire
 - name: Create artifacts folder
   command: mkdir -p /var/www/artifacts
 
-- name: Extract .tar archive
+- name: Extract .tar.gz archive
   unarchive:
-    src: /var/www/{{ artifact_id }}-{{ version }}.tar
+    src: /data/artifacts/{{ artifact_id }}-{{ version }}.tar.gz
     # Remove /artifacts
     dest: /var/www/artifacts
     remote_src: yes
@@ -19,9 +19,6 @@
 
 - name: Rename back folder
   command: mv /var/www/artifacts /var/www/back
-
-- name: Remove back folder
-  command: rm -rf /var/www/{{ artifact_id }}-{{ version }}.tar
 
 - name: Create .env file
   template:
@@ -46,6 +43,21 @@
 
 - name: Apply migrations
   command: php /var/www/back/artisan migrate
+
+- name: Read prev_version.txt
+  shell: cat /data/prev_version.txt
+  register: prev_version
+
+- name: Read current_version.txt
+  shell: cat /data/current_version.txt
+  register: current_version
+
+- name: Tag the previous version
+  shell: echo {{ current_version.stdout }} > /data/prev_version.txt 
+  when: current_version.stdout and current_version.stdout != prev_version.stdout and current_version.stdout != "{{ artifact_id }}-{{ version }}"
+
+- name: Tag the current version
+  shell: echo {{ artifact_id }}-{{ version }} > /data/current_version.txt 
 
 - name: Restart Nginx
   service:
