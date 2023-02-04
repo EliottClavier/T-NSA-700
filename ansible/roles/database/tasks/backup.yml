@@ -16,3 +16,9 @@
 
 - name: Tag the current version
   shell: echo {{ version }} > /data/current_version.txt 
+
+- name: Restart MariaDB
+  service:
+    name: mariadb
+    state: restarted
+    enabled: yes
