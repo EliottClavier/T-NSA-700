@@ -1,11 +1,11 @@
 - name: Download front Artifact
   get_url:
-    url: http://{{ nexus_server_address }}:{{ nexus_server_port }}/repository/maven-releases/frontend/{{ artifact_id }}/{{ version }}/{{ artifact_id }}-{{ version }}.tar
-    dest: /data/artifacts/{{ artifact_id }}-{{ version }}.tar
+    url: http://{{ nexus_server_address }}:{{ nexus_server_port }}/repository/maven-releases/frontend/{{ artifact_id }}/{{ version }}/{{ artifact_id }}-{{ version }}.tar.gz
+    dest: /data/artifacts/{{ artifact_id }}-{{ version }}.tar.gz
 
-- name: Extract .tar archive
+- name: Extract .tar.gz archive
   unarchive:
-    src: /data/artifacts/{{ artifact_id }}-{{ version }}.tar
+    src: /data/artifacts/{{ artifact_id }}-{{ version }}.tar.gz
     dest: /var/www/html/
     remote_src: yes
   
@@ -14,6 +14,21 @@
 
 - name: Rename front folder
   command: mv /var/www/html/artifacts /var/www/html/front 
+
+- name: Read prev_version.txt
+  shell: cat /data/prev_version.txt
+  register: prev_version
+
+- name: Read current_version.txt
+  shell: cat /data/current_version.txt
+  register: current_version
+
+- name: Tag the previous version
+  shell: echo {{ current_version.stdout }} > /data/prev_version.txt 
+  when: current_version.stdout and current_version.stdout != prev_version.stdout and current_version.stdout != "{{ artifact_id }}-{{ version }}"
+
+- name: Tag the current version
+  shell: echo {{ artifact_id }}-{{ version }} > /data/current_version.txt 
 
 - name: Restart Nginx
   service:
