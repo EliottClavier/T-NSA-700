@@ -1,92 +1,108 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-#SERVER_NAME="server_NSA_G5"
-#SERVER_IP="192.168.153.118"
-#require '.env'
-#Dotenv.load
-
 require 'yaml'
 require 'getoptlong'
+
 
 v1 = ARGV[0]
 
 
+servers = ["server", "front", "back", "db"]
+
 current_dir    = File.dirname(File.expand_path(__FILE__))
 configs        = YAML.load_file("#{current_dir}/config.yaml")
-vagrant_config = configs['configs'][configs['configs']['use']]
-
-
-#Vagrant.configure("2") do |config|
-  #config.vm.provision "shell", path: "scripts/install_gem.sh"
-#end 
-
-Vagrant.configure("2") do |config|
-
-  config.vm.box = "debian/bullseye64"
-
-  config.vm.provision "shell", inline: "echo '#{vagrant_config['name']}'"
-
-  
-  
-  config.vm.provider "virtualbox" do |vb|   
-    # Display the VirtualBox GUI when booting the machine
-    vb.gui = true  
-	  # Customize the name of the VM:
-	  vb.name = "#{vagrant_config['name']}"
-    # Customize the amount of memory and core on the VM:
-    vb.memory = "2048"
-	  vb.cpus = 2
-  end
-
-  # Create a private network using a specific IP.
-	config.vm.network "private_network", ip: "#{vagrant_config['public_ip']}"
-  
-  # Enable provisioning with a shell script.
-  config.vm.provision "shell", path: "scripts/install_ansible.sh"
-  config.vm.provision "shell", path: "scripts/install_docker.sh"
-  config.vm.provision "shell", path: "scripts/install_ssh_pass.sh"
+#vagrant_config = configs['configs'][configs['configs']['use']]
  
-  # Provisioning ansible folder in /etc
-  config.vm.provision "file", source: "../ansible", destination: "/tmp/ansible"
-  config.vm.provision "shell", path: "scripts/transfer_ansible.sh"
-
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # NOTE: This will enable public access to the opened port
-  #config.vm.network "forwarded_port", guest: 80, host: 8080
-
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine and only allow access
-  # via 127.0.0.1 to disable public access
-	#config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network "public_network"
-
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-
-  #config.vm.provision "shell", inline: "sudo mkdir -p '/vagrant/ansible/'"
-	#config.vm.synced_folder "../ansible", "/vagrant/ansible"
-  #config.vm.provision "shell",
-  #inline: "cp /vagrant/ansible /etc/ansible2 "
-
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
+VAGRANT_VMS = [
+  { name: 'vm1', public_ip: "192.168.153.56" },
+  { name: 'front', public_ip: "192.168.1.78" },
+  { name: 'back', public_ip: "192.168.1.49" },
+  { name: 'db', public_ip: "192.168.1.48" },
+]
   
+Vagrant.configure("2") do |config|  
+
+      # Enable provisioning with a shell script.
+      config.vm.provision "shell", path: "scripts/install_ansible.sh"
+
+      config.vm.provision "shell", path: "scripts/install_ssh_pass.sh"
+     
+      # Provisioning ansible folder in /etc
+      config.vm.provision "file", source: "../ansible", destination: "/tmp/ansible"
+      config.vm.provision "shell", path: "scripts/transfer_ansible.sh"
+      
+  VAGRANT_VMS.each_with_index do |server, i|
+  config.vm.provision "shell", inline: "echo res1 : #{configs}}" 
+
+      if server[:name] == "vm1"
+        config.vm.provision "shell", path: "scripts/install_docker.sh"
+      end
+
+    config.vm.define server[:name] do |node|
+
+    # Get the config for the current VM 
+    #configs_nodes = [configs['configs']["#{server}"]]
+    #config.vm.provision "shell", inline: "echo res2 : #{configs_nodes}" 
+    # config.vm.provision "shell", inline: "echo res : #{configs_nodes['public_ip']}" 
+
+    node.vm.box = "debian/bullseye64"
+            
+    node.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = true 
+      #vb.name = "vagrant_#{server}"
+      # Amount of memory and core on the VM:
+      vb.memory = "4096"
+      vb.cpus = 2
+      end
+    
+
+       # Create a private network using a specific IP.
+      node.vm.hostname = server[:name]
+      #node.vm.network "forwarded_port", guest: 80, host: 8080 + i
+      node.vm.network "private_network", ip: server[:public_ip]
+     
+   
+      
+    
+     
+      #config.vm.network "private_network", ip: "#{vagrant_config['public_ip']}"
+      #config.vm.hostname = "#{vagrant_config['name']}"
+      
+
+      # Create a forwarded port mapping which allows access to a specific port
+      # within the machine from a port on the host machine. In the example below,
+      # accessing "localhost:8080" will access port 80 on the guest machine.
+      # NOTE: This will enable public access to the opened port
+      #config.vm.network "forwarded_port", guest: 80, host: 8080
+    
+      # Create a forwarded port mapping which allows access to a specific port
+      # within the machine from a port on the host machine and only allow access
+      # via 127.0.0.1 to disable public access
+      #config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+    
+      # Create a public network, which generally matched to bridged network.
+      # Bridged networks make the machine appear as another physical device on
+      # your network.
+      # config.vm.network "public_network"
+    
+      # Share an additional folder to the guest VM. The first argument is
+      # the path on the host to the actual folder. The second argument is
+      # the path on the guest to mount the folder. And the optional third
+      # argument is a set of non-required options.
+    
+      #config.vm.provision "shell", inline: "sudo mkdir -p '/vagrant/ansible/'"
+      #config.vm.synced_folder "../ansible", "/vagrant/ansible"
+      #config.vm.provision "shell",
+      #inline: "cp /vagrant/ansible /etc/ansible2 "
+    
+      # Provider-specific configuration so you can fine-tune various
+      # backing providers for Vagrant. These expose provider-specific options.
+      # Example for VirtualBox:
+
+    end
+   
+  end
   
-
-
-   # config.vm.provision "ansible" do |ansible|
-    # ansible.verbose = "v"
-    # ansible.playbook = "playbook/setup.yml"
-  # end
-
 end
