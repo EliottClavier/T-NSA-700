@@ -11,15 +11,17 @@
         name: front
         tasks_from: deploy_stack.yml
 
-# - name: Backup database
-#   hosts: database_servers
-#   become: true
-#   vars_files:
-#     - /etc/ansible/vault.yml
-#   tasks:
-#     - include_role:
-#         name: database
-#         tasks_from: backup.yml
+- name: Create a backup for database
+  hosts: database_servers
+  become: true
+  vars:
+    version: "{{ back_version }}"
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - include_role:
+        name: database
+        tasks_from: backup.yml
 
 # - name: Deploy back
 #   hosts: back_servers

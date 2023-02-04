@@ -8,6 +8,12 @@
     name: python3-mysqldb
     state: latest
 
+- name: Create prev_version.txt
+  shell: touch /data/prev_version.txt
+
+- name: Create current_version.txt
+  shell: touch /data/current_version.txt
+
 - name: Create my.cnf's directory
   command: mkdir -p /home/{{ db_username }}
 
