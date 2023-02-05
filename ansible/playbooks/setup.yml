@@ -1,3 +1,18 @@
+# Note: gather_facts are set to false, because it triggers a first contact with hosts. Setup playbook
+# is run especially on new hosts, so it's mandatory to avoid this first contact because the executer of the playbook
+# does not have register these new hosts in know_hosts and it blocks the execution of the playbook.
+# The first task of each role it to register each host in know_hosts.
+
+- name: Register hosts to know_hosts
+  hosts: all
+  gather_facts: false
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - include_role:
+        name: common
+        tasks_from: register_hosts.yml
+
 - name: Setup front
   hosts: front_servers
   become: true

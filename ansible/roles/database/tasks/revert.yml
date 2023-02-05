@@ -1,0 +1,22 @@
+- name: Read prev_version.txt
+  shell: cat /data/prev_version.txt
+  register: prev_version
+
+- name: Read current_version.txt
+  shell: cat /data/current_version.txt
+  register: current_version
+
+- name: Revert database to the state it was in previous version
+  shell: mysql -u{{ db_username }} -p{{ db_password }} {{ db_database }} < {{ db_database }}-{{ prev_version.stdout }}.sql
+
+- name: Switch the previous version
+  shell: echo {{ current_version.stdout }} > /data/prev_version.txt 
+
+- name: Switch the current version
+  shell: echo {{ prev_version.stdout }} > /data/current_version.txt 
+
+- name: Restart MariaDB
+  service:
+    name: mariadb
+    state: restarted
+    enabled: yes
