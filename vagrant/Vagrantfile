@@ -3,9 +3,11 @@
 
 require 'yaml'
 
+# Get config.yaml file 
 current_dir    = File.dirname(File.expand_path(__FILE__))
 configs        = YAML.load_file("#{current_dir}/config.yaml")
 
+# Create vms object config
 VAGRANT_VMS = []
 configs['configs'].each do |key, value|
     VAGRANT_VMS << { name: value['name'], ip: value['ip'] } 
