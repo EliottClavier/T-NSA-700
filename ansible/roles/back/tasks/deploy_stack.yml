@@ -3,15 +3,10 @@
     url: http://{{ nexus_server_address }}:{{ nexus_server_port }}/repository/maven-releases/backend/{{ artifact_id }}/{{ version }}/{{ artifact_id }}-{{ version }}.tar.gz
     dest: /data/artifacts/{{ artifact_id }}-{{ version }}.tar.gz
 
-# Temporaire
-- name: Create artifacts folder
-  command: mkdir -p /var/www/artifacts
-
 - name: Extract .tar.gz archive
   unarchive:
     src: /data/artifacts/{{ artifact_id }}-{{ version }}.tar.gz
-    # Remove /artifacts
-    dest: /var/www/artifacts
+    dest: /var/www
     remote_src: yes
 
 - name: Remove back folder (if it exists)
