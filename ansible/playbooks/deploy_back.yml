@@ -1,0 +1,24 @@
+- name: Create a backup for database
+  hosts: database_servers
+  become: true
+  vars:
+    version: "{{ version }}"
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - include_role:
+        name: database
+        tasks_from: backup.yml
+
+- name: Deploy back
+  hosts: back_servers
+  become: true
+  vars:
+    artifact_id: "{{ artifact_id }}"
+    version: "{{ version }}"
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - include_role:
+        name: back
+        tasks_from: deploy_stack.yml
