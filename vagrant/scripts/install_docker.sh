@@ -1,5 +1,6 @@
 #!/bin/bash
 
+if [ "$VM_NAME" == "vm1" ]; then
 # Update the package index
 sudo apt-get update
 
@@ -25,3 +26,4 @@ sudo apt-get install --yes docker-ce docker-ce-cli containerd.io
 sudo systemctl start docker
 sudo systemctl enable docker
 sudo systemctl enable docker
+fi

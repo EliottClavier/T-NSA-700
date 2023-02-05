@@ -1,20 +1,19 @@
 configs:
-
-    use: ""
-
-    server:
-      name: ""
-      public_ip: ""  
-        
-    front:
-      name: ""
-      public_ip: ""
+   front
+      name: "example"
+      ip:  "192.168.154.12"     
 
     back:
       name: ""
-      public_ip: ""
+      ip:  ""     
     
     db:
       name: ""
-      public_ip: ""
+      ip:  ""  
+   
+    vm1:
+      name: ""
+      ip:  ""     
         
+vars:
+  box: "debian/bullseye64"
