@@ -1,0 +1,60 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'yaml'
+
+# Get config.yaml file 
+current_dir    = File.dirname(File.expand_path(__FILE__))
+configs        = YAML.load_file("#{current_dir}/config.yaml")
+
+# Create vms object config
+VAGRANT_VMS = []
+configs['configs'].each do |key, value|
+    VAGRANT_VMS << { name: value['name'], ip: value['ip'] } 
+end
+  
+Vagrant.configure("2") do |config|  
+ 
+  # Enable provisioning with a shell script.
+  config.vm.provision "shell", path: "scripts/install_ansible.sh"
+  config.vm.provision "shell", path: "scripts/install_tools.sh"
+     
+  # Provisioning ansible folder in /etc
+  config.vm.provision "file", source: "../ansible", destination: "/tmp/ansible"
+  config.vm.provision "shell", path: "scripts/transfer_ansible.sh"
+      
+  # Iteration of each VM
+  VAGRANT_VMS.each do |server|
+
+    vm_name = server[:name]
+    vm_ip = server[:ip]
+
+    # Create a new VM
+    config.vm.define vm_name do |node|  
+
+    # Define the Box used
+    node.vm.box = configs['vars']['box']
+
+    # Provisioning docker on vm1 only
+    if vm_name == "vm1"
+      node.vm.provision "shell", env: { "VM_NAME" => vm_name }, path: "scripts/install_docker.sh"
+    end
+            
+    node.vm.provider "virtualbox" do |vb|
+      # VM name
+      vb.name = "#{vm_name}_NSA_5"
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = true       
+      # Amount of memory and core on the VM:
+      vb.memory = "4096"
+      vb.cpus = 2
+      end    
+
+      # Create a private network using a specific IP.
+      node.vm.hostname = vm_name
+      node.vm.network "private_network", ip: vm_ip  
+    end
+   
+  end
+  
+end
