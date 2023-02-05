@@ -18,37 +18,35 @@ Before you start, you will need to have the following installed on your computer
 
 2. Download and install Vagrant from the [Vagrant website](https://www.vagrantup.com/downloads.html).
 
+## Configuring Virtual Machines
+The names and IP addresses of the virtual machines are defined in the vagrant/config.yaml file. 
+An example example.config.yaml is available and must be renamed in "config.yaml" and completed with the names and IP addresses of the virtual machines.
+
 ## Starting a Virtual Machine
 
-1. Navigate to the directory that contains your `Vagrantfile` in the terminal.
+1. Navigate to the directory that contains your Vagrantfile in the terminal.
 
 2. Start the virtual machine by running the following command:
 
-vagrant up
+    vagrant up
 
+This command will run all virtual machine.
 
-This command will use the configuration specified in your `Vagrantfile` to start the virtual machine.
+3. For a specific vitrual machine, use :
+
+    vagrant up <vm_name>
+
+These command will use the configuration specified in your `Vagrantfile` to start the virtual machine.
 
 ## Logging into a Virtual Machine
 
 1. Log into the virtual machine by running the following command:
 
-vagrant ssh
+    vagrant ssh <vm_name>
 
-
+Replace <vm_name> with the name of the virtual machine that you have specified in the config.yaml file.
 This will open a secure shell connection to the virtual machine.
 
-## Login Credentials
-
-The following credentials can be used to log into the virtual machine:
-
-- `vagrant` user:
-- username: `vagrant`
-- password: `vagrant`
-
-- `root` user:
-- username: `root`
-- password: `vagrant`
 
 ## Conclusion
 
