@@ -8,6 +8,9 @@
     name: python3-mysqldb
     state: latest
 
+- name: Create data folder
+  command: mkdir -p /data
+
 - name: Create prev_version.txt
   shell: touch /data/prev_version.txt
 

@@ -1,19 +1,19 @@
 configs:
-   front
-      name: "example"
-      ip:  "192.168.154.12"     
+  front:
+    name: "front"
+    ip:  ""     
 
-    back:
-      name: ""
-      ip:  ""     
-    
-    db:
-      name: ""
-      ip:  ""  
-   
-    vm1:
-      name: ""
-      ip:  ""     
+  back:
+    name: "back"
+    ip:  ""     
+  
+  db:
+    name: "db"
+    ip:  ""  
+  
+  vm1:
+    name: "terminal"
+    ip:  ""     
         
 vars:
   box: "debian/bullseye64"
