@@ -1,6 +1,5 @@
 - name: Deploy front
   hosts: front_servers
-  become: true
   vars:
     artifact_id: "{{ artifact_id }}"
     version: "{{ version }}"
