@@ -1,13 +1,3 @@
-- name: Register hosts to know_hosts
-  hosts: front_servers
-  gather_facts: false
-  vars_files:
-    - /etc/ansible/vault.yml
-  tasks:
-    - include_role:
-        name: common
-        tasks_from: register_hosts.yml
-
 - name: Deploy front
   hosts: front_servers
   become: true
