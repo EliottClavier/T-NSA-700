@@ -32,3 +32,4 @@ configs:
 vars:
   box: "debian/bullseye64"  
   runner_register_token: ""
+  gitlab_server_url: ""

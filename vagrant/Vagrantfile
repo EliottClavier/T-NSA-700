@@ -12,6 +12,9 @@ VAGRANT_VMS = []
 configs['configs'].each do |key, value|
     VAGRANT_VMS << { name: value['name'], ip: value['ip'], memory: value['memory'], cpus: value['cpus'], main: value['main_vm'] } 
 end
+
+REGISTRATION_TOKEN = configs['vars']['runner_register_token']
+GITLAB_SERVER_URL = configs['vars']['gitlab_server_url']
   
 Vagrant.configure("2") do |config|
  
@@ -39,14 +42,14 @@ Vagrant.configure("2") do |config|
     if is_vm_main
 
       # Provisioning docker
-      node.vm.provision "shell", env: { "VM_NAME" => vm_name }, path: "scripts/install_docker.sh"
+      node.vm.provision "shell", path: "scripts/install_docker.sh"
       # Provisioning ansible
       node.vm.provision "shell", path: "scripts/install_ansible.sh"
       # Provisioning ansible folder in /etc
       node.vm.provision "file", source: "../ansible", destination: "/tmp/ansible"
       node.vm.provision "shell", path: "scripts/transfer_ansible.sh"
-      
-      node.vm.provision "shell", env: { "VM_NAME" => vm_name }, path: "scripts/install_runner.sh"
+      # Provisioning Gitlab-Runner
+      node.vm.provision "shell", env: { "PROJECT_REGISTRATION_TOKEN" => REGISTRATION_TOKEN, "PROJECT_GITLAB_SERVER_URL"=> GITLAB_SERVER_URL }, path: "scripts/install_runner.sh"
     end
             
     node.vm.provider "virtualbox" do |vb|

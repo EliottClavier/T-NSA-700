@@ -1,7 +1,6 @@
 #!/bin/bash
 
-if [ "$VM_NAME" == "vm1" ]; then
-
+sudo echo "Installing GitLab Runner..."
 # Update the package index
 sudo apt-get update
 
@@ -17,13 +16,16 @@ sudo chmod +x /usr/local/bin/gitlab-runner
 # Create GitLab Runner user
 sudo useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash
 
+# Update the package index
+sudo apt-get update
+
 # Install and run as service
 sudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner
 
 # Register GitLab Runner
 sudo gitlab-runner register \
-  --url "PROJECT_GITLAB_SERVER_URL" \
-  --registration-token "PROJECT_REGISTRATION_TOKEN" \
+  --url "$PROJECT_GITLAB_SERVER_URL" \
+  --registration-token "$PROJECT_REGISTRATION_TOKEN" \
   --non-interactive \
   --executor "docker" \
   --docker-image alpine:latest \
@@ -35,5 +37,3 @@ sudo gitlab-runner register \
 
 # Start GitLab Runner
 sudo gitlab-runner start
-
-fi
