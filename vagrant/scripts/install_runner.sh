@@ -1,6 +1,14 @@
 #!/bin/bash
 
 sudo echo "Installing GitLab Runner..."
+
+# If runner's folder exists, ignore installation
+if [ "$(ls -A /etc/systemd/system/gitlab-runner.service)" ]; then
+
+  sudo echo "GitLab Runner already exists, Installation aborted..."
+
+else
+
 # Update the package index
 sudo apt-get update
 
@@ -37,3 +45,4 @@ sudo gitlab-runner register \
 
 # Start GitLab Runner
 sudo gitlab-runner start
+fi
