@@ -1,0 +1,17 @@
+# Ansible username / password to connect
+vault_ansible_user:
+vault_ansible_password:
+# Nexus informations
+vault_nexus_server_address:
+vault_nexus_server_port: 
+# Servers IP
+vault_front_server_ip:
+vault_back_server_ip:
+vault_database_server_ip:
+# Back .env variables
+vault_back_app_key:
+vault_back_db_port:
+# Database .env variables
+vault_db_database:
+vault_db_username:
+vault_db_password:
