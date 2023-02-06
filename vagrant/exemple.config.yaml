@@ -5,6 +5,7 @@ configs:
     ip: ""
     memory: 1024
     cpus: 2
+    main_vm: false
  
     
   front:
@@ -12,18 +13,21 @@ configs:
     ip: ""
     memory: 1024
     cpus: 2
+    main_vm: false
 
   db:
     name: "db"
     ip: ""
     memory: 1024
     cpus: 2
+    main_vm: false
 
   terminal:
     name: "terminal"
     ip: "" 
     memory: 8192 
     cpus: 2
+    main_vm: true
 
 vars:
   box: "debian/bullseye64"  
