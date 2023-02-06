@@ -1,19 +1,30 @@
-configs:
-  front:
-    name: "front"
-    ip:  ""     
+configs:   
 
   back:
     name: "back"
-    ip:  ""     
-  
+    ip: ""
+    memory: 1024
+    cpus: 2
+ 
+    
+  front:
+    name: "front"
+    ip: ""
+    memory: 1024
+    cpus: 2
+
   db:
     name: "db"
-    ip:  ""  
-  
-  vm1:
+    ip: ""
+    memory: 1024
+    cpus: 2
+
+  terminal:
     name: "terminal"
-    ip:  ""     
-        
+    ip: "" 
+    memory: 8192 
+    cpus: 2
+
 vars:
-  box: "debian/bullseye64"
+  box: "debian/bullseye64"  
+  runner_register_token: ""

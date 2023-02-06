@@ -10,21 +10,24 @@ configs        = YAML.load_file("#{current_dir}/config.yaml")
 # Create vms object config
 VAGRANT_VMS = []
 configs['configs'].each do |key, value|
-    VAGRANT_VMS << { name: value['name'], ip: value['ip'] } 
+    VAGRANT_VMS << { name: value['name'], ip: value['ip'], memory: value['memory'], cpus: value['cpus'], main: value['main_vm'] } 
 end
   
 Vagrant.configure("2") do |config|
  
-  # Enable provisioning with a shell script.
-  
+  #Provisioning default config and software  
   config.vm.provision "shell", path: "scripts/install_tools.sh"
   config.vm.provision "shell", path: "scripts/config_ssh.sh"
        
   # Iteration of each VM
   VAGRANT_VMS.each do |server|
 
+    # Get VM config
     vm_name = server[:name]
     vm_ip = server[:ip]
+    vm_memory = server[:memory]
+    vm_cpu = server[:cpus]
+    is_vm_main = server[:main]
 
     # Create a new VM
     config.vm.define vm_name do |node|  
@@ -33,7 +36,7 @@ Vagrant.configure("2") do |config|
     node.vm.box = configs['vars']['box']
 
     # Provisioning on vm1 only
-    if vm_name == "vm1"
+    if is_vm_main
 
       # Provisioning docker
       node.vm.provision "shell", env: { "VM_NAME" => vm_name }, path: "scripts/install_docker.sh"
@@ -51,13 +54,13 @@ Vagrant.configure("2") do |config|
       # Display the VirtualBox GUI when booting the machine
       vb.gui = true
       # Amount of memory and core on the VM:
-      vb.memory = "4096"
-      vb.cpus = 2
+      vb.memory = vm_memory
+      vb.cpus = vm_cpu
       end
 
       # Create a private network using a specific IP.
       node.vm.hostname = vm_name
-      node.vm.network "private_network", ip: vm_ip  
+      node.vm.network "private_network", ip: vm_ip 
     end
    
   end
