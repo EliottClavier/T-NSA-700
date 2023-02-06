@@ -43,6 +43,7 @@ sudo gitlab-runner register \
   --tag-list "ansible" \
   --run-untagged="false"
 
+fi
+
 # Start GitLab Runner
 sudo gitlab-runner start
-fi
