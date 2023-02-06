@@ -38,6 +38,7 @@ Vagrant.configure("2") do |config|
     # Provisioning docker on vm1 only
     if vm_name == "vm1"
       node.vm.provision "shell", env: { "VM_NAME" => vm_name }, path: "scripts/install_docker.sh"
+      node.vm.provision "shell", env: { "VM_NAME" => vm_name }, path: "scripts/install_runner.sh"
     end
             
     node.vm.provider "virtualbox" do |vb|
