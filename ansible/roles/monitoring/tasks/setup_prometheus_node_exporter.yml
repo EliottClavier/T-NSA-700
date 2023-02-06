@@ -1,0 +1,43 @@
+- name: Install Prometheus and Node Exporter
+  package:
+    name: 
+      - prometheus
+      - prometheus-node-exporter
+    state: present
+
+- name: Start and enable Prometheus and Node Exporter
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - prometheus
+    - prometheus-node-exporter
+
+- name: Configure Prometheus
+  template:
+    src: prometheus.yml
+    dest: /etc/prometheus/prometheus.yml
+    owner: prometheus
+    group: prometheus
+    mode: 0640
+
+- name: Configure Prometheus rules
+  template:
+    src: rules.yml
+    dest: /etc/prometheus/rules.yml
+    owner: prometheus
+    group: prometheus
+    mode: 0640
+
+- name: Restart Prometheus
+  service:
+    name: prometheus
+    state: restarted
+    enabled: yes
+
+- name: Restart Node Exporter
+  service:
+    name: prometheus-node-exporter
+    state: restarted
+    enabled: yes

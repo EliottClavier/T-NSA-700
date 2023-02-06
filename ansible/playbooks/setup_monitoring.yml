@@ -1,0 +1,23 @@
+- name: Set up Grafana on terminal
+  hosts: 
+    - terminal_servers
+  become: yes
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - include_role:
+        name: monitoring
+        tasks_from: setup_grafana.yml
+
+- name: Set up Prometheus and Node Exporter on servers
+  hosts: 
+    - front_servers
+    - back_servers
+    - database_servers
+  become: yes
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - include_role:
+        name: monitoring
+        tasks_from: setup_prometheus_node_exporter.yml

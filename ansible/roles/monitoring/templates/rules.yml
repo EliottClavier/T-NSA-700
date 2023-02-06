@@ -1,0 +1,5 @@
+groups:
+  - name: cpu_usage
+    rules:
+      - record: cpu_usage:percent
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
