@@ -37,6 +37,7 @@ sudo gitlab-runner register \
   --non-interactive \
   --executor "docker" \
   --docker-image alpine:latest \
+  --docker-volumes "/etc/ansible:/etc/ansible" \
   --description "docker-runner" \
   --description "deployment-runner" \
   --maintenance-note "Deployment runner" \
