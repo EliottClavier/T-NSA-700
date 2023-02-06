@@ -24,9 +24,11 @@ sudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab
 sudo gitlab-runner register \
   --url "PROJECT_GITLAB_SERVER_URL" \
   --registration-token "PROJECT_REGISTRATION_TOKEN" \
+  --non-interactive \
   --executor "docker" \
   --docker-image alpine:latest \
   --description "docker-runner" \
+  --description "deployment-runner" \
   --maintenance-note "Deployment runner" \
   --tag-list "ansible" \
   --run-untagged="false"
