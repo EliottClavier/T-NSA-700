@@ -24,14 +24,14 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 7,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PE9F8741CEC5561FB"
+        "uid": "PAF627616C1567A33"
       },
       "fieldConfig": {
         "defaults": {
@@ -110,7 +110,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PE9F8741CEC5561FB"
+            "uid": "PAF627616C1567A33"
           },
           "editorMode": "builder",
           "expr": "sum(vm_network_transmit)",
@@ -126,7 +126,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PE9F8741CEC5561FB"
+        "uid": "PAF627616C1567A33"
       },
       "fieldConfig": {
         "defaults": {
@@ -205,7 +205,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PE9F8741CEC5561FB"
+            "uid": "PAF627616C1567A33"
           },
           "editorMode": "builder",
           "expr": "sum(vm_network_receive)",
@@ -221,7 +221,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PE9F8741CEC5561FB"
+        "uid": "PAF627616C1567A33"
       },
       "fieldConfig": {
         "defaults": {
@@ -275,7 +275,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PE9F8741CEC5561FB"
+            "uid": "PAF627616C1567A33"
           },
           "editorMode": "builder",
           "expr": "vm_load_average",
@@ -290,7 +290,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PE9F8741CEC5561FB"
+        "uid": "PAF627616C1567A33"
       },
       "fieldConfig": {
         "defaults": {
@@ -344,7 +344,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PE9F8741CEC5561FB"
+            "uid": "PAF627616C1567A33"
           },
           "editorMode": "builder",
           "expr": "vm_cpu_utilization",
@@ -360,7 +360,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PE9F8741CEC5561FB"
+        "uid": "PAF627616C1567A33"
       },
       "fieldConfig": {
         "defaults": {
@@ -411,7 +411,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PE9F8741CEC5561FB"
+            "uid": "PAF627616C1567A33"
           },
           "editorMode": "builder",
           "expr": "vm_memory_usage",
@@ -426,7 +426,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PE9F8741CEC5561FB"
+        "uid": "PAF627616C1567A33"
       },
       "fieldConfig": {
         "defaults": {
@@ -477,7 +477,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PE9F8741CEC5561FB"
+            "uid": "PAF627616C1567A33"
           },
           "editorMode": "builder",
           "expr": "vm_disk_space_usage",
@@ -503,8 +503,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Back dashboard",
-  "uid": "pEfbGs0Vk",
-  "version": 3,
+  "title": "Database dashboard",
+  "uid": "zEoBns456",
+  "version": 1,
   "weekStart": ""
 }

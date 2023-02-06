@@ -5,3 +5,13 @@ datasources:
     type: prometheus
     access: proxy
     url: http://{{ back_server_ip }}:9090
+
+  - name: Prometheus Front
+    type: prometheus
+    access: proxy
+    url: http://{{ front_server_ip }}:9090
+  
+  - name: Prometheus Database
+    type: prometheus
+    access: proxy
+    url: http://{{ database_server_ip }}:9090

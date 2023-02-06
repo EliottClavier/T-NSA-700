@@ -1,8 +1,9 @@
-- name: Install Prometheus and Node Exporter
+- name: Install Prometheus and Node Exporter (and NTP)
   package:
     name: 
       - prometheus
       - prometheus-node-exporter
+      - ntp
     state: present
 
 - name: Start and enable Prometheus and Node Exporter
@@ -30,6 +31,14 @@
     group: prometheus
     mode: 0640
 
+- name: Configure NTP
+  template:
+    src: ntp.conf
+    dest: /etc/ntp.conf
+    owner: root
+    group: root
+    mode: 0640
+
 - name: Restart Prometheus
   service:
     name: prometheus
@@ -39,5 +48,11 @@
 - name: Restart Node Exporter
   service:
     name: prometheus-node-exporter
+    state: restarted
+    enabled: yes
+
+- name: Restart NTP
+  service:
+    name: ntp
     state: restarted
     enabled: yes
