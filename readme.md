@@ -54,6 +54,8 @@ The names and IP addresses of the virtual machines are defined in a `vagrant/con
 - In "vagrant" folder, use `example.config.yml` template to create a `config.yml` file
 - Open the file and complete the IP addresses of the virtual machines.
 - Indicate true to the `main_vm` parms to get a Vm with Ansible on it ( in the template, the VM called "terminal" has this option to true)
+- Indicate the url of the gitlab server
+- Indicate the `runner_register_token`.
 
 ### Configuring Ansible secret
 
