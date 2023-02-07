@@ -4,11 +4,11 @@
 
 - [Contributors](#contributors)
 - [First Steps](#first-steps)
-- [Local VMs with Vagrant](#local-vms-with-Vagrant)
     - [Prerequisites](#prerequisites)
     - [Installing Vagrant and VirtualBox](#installing-vagrant-and-virtualbox)
-    - [Configuring Virtual Machines](#configuring-virtual-machines)
-    - [Starting a Virtual Machine](#starting-a-virtual-machine)
+    - [Configuring Virtual Machines](#configuring-virtual-machines)*
+    - [Configuring Ansible secret] (#configuring-ansible-secret)
+    - [Starting a Virtual Machine](#starting-a-virtual-machine)    
     - [Logging into a Virtual Machine](#logging-into-a-virtual-machine)
     - [Environment setup](#environment-setup)
     - [Conclusion](#conclusion)
@@ -55,13 +55,13 @@ The names and IP addresses of the virtual machines are defined in a `vagrant/con
 
 ### Configuring Ansible secret
 
-## vault_pass
+#### Vault_pass
 
 You must define a password in root_pass.txt. To do this :
 - In /ansible, use the `example.vault_pass.txt` template to create file to create a `vault_pass.txt` file
 - Write a password of your choice inside the file
 
-## vault
+#### Vault
 
 You must define parms in vault.yml To do this :
 - In /ansible, use the `example.vault.yml` template file to create a `vault.yml` file.
