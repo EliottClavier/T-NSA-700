@@ -68,7 +68,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS_DATABASE}"
+        "uid": "Prometheus Database"
       },
       "fieldConfig": {
         "defaults": {
@@ -147,7 +147,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_DATABASE}"
+            "uid": "Prometheus Database"
           },
           "editorMode": "builder",
           "expr": "sum(vm_network_transmit)",
@@ -163,7 +163,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS_DATABASE}"
+        "uid": "Prometheus Database"
       },
       "fieldConfig": {
         "defaults": {
@@ -242,7 +242,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_DATABASE}"
+            "uid": "Prometheus Database"
           },
           "editorMode": "builder",
           "expr": "sum(vm_network_receive)",
@@ -258,13 +258,14 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS_DATABASE}"
+        "uid": "Prometheus Database"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
+          "decimals": 1,
           "mappings": [],
           "max": 1,
           "min": 0,
@@ -312,7 +313,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_DATABASE}"
+            "uid": "Prometheus Database"
           },
           "editorMode": "builder",
           "expr": "vm_load_average",
@@ -327,7 +328,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS_DATABASE}"
+        "uid": "Prometheus Database"
       },
       "fieldConfig": {
         "defaults": {
@@ -336,10 +337,10 @@
           },
           "decimals": 1,
           "mappings": [],
-          "max": 100,
+          "max": 1,
           "min": 0,
           "thresholds": {
-            "mode": "percentage",
+            "mode": "absolute",
             "steps": [
               {
                 "color": "green",
@@ -351,7 +352,7 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -381,7 +382,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_DATABASE}"
+            "uid": "Prometheus Database"
           },
           "editorMode": "builder",
           "expr": "vm_cpu_utilization",
@@ -397,7 +398,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS_DATABASE}"
+        "uid": "Prometheus Database"
       },
       "fieldConfig": {
         "defaults": {
@@ -448,7 +449,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_DATABASE}"
+            "uid": "Prometheus Database"
           },
           "editorMode": "builder",
           "expr": "vm_memory_usage",
@@ -463,13 +464,14 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS_DATABASE}"
+        "uid": "Prometheus Database"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
+          "decimals": 1,
           "mappings": [],
           "max": 100,
           "min": 0,
@@ -514,7 +516,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_DATABASE}"
+            "uid": "Prometheus Database"
           },
           "editorMode": "builder",
           "expr": "vm_disk_space_usage",
@@ -527,7 +529,7 @@
       "type": "gauge"
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -535,13 +537,13 @@
     "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Database dashboard",
   "uid": "zEoBns456",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
