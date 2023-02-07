@@ -39,13 +39,6 @@
     group: root
     mode: 0640
 
-- name: Enable automatic restart of services
-  command: systemctl enable {{ item }} 
-  loop:
-    - prometheus
-    - prometheus-node-exporter
-    - ntp
-
 - name: Restart Prometheus
   service:
     name: prometheus

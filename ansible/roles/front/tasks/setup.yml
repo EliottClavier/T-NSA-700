@@ -6,11 +6,11 @@
 - name: Create artifacts folder
   command: mkdir -p /data/artifacts
 
-- name: Create .txt version files
-  shell: touch /data/{{ item }}.txt
-  loop:
-    - prev_version
-    - current_version
+- name: Create prev_version.txt
+  shell: touch /data/prev_version.txt
+
+- name: Create current_version.txt
+  shell: touch /data/current_version.txt
 
 - name: Create Nginx configuration file
   template:
