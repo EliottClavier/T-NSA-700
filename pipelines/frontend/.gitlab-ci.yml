@@ -1,0 +1,72 @@
+image: node:10.8.0
+
+stages:
+  - build
+  - unit_tests
+  - send_artifact
+  - deploy
+  - revert_version
+
+before_script:
+  - apt-get update -y
+
+build:
+  stage: build
+  script:
+    - apt-get install -y python-pip --force-yes
+    - npm install -g @angular/cli@7.1.4 yarn
+    - yarn install
+    - npm ci
+    - mkdir -p $CI_PROJECT_DIR/artifacts/
+    - ng build --prod
+    - cp -r dist/front/* $CI_PROJECT_DIR/artifacts/
+  artifacts:
+    paths:
+    - artifacts/
+
+unit_tests:
+  stage: unit_tests
+  script:
+    - npm install -g @angular/cli@7.1.4 yarn
+    - yarn install
+    - apt-get install -y chromium --force-yes
+    - export CHROME_BIN=/usr/bin/chromium
+    - ng test --browsers=ChromeHeadlessNoSandbox --watch=false
+
+send_artifact:
+  stage: send_artifact
+  rules:
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_TAG =~ /^d+\.\d+\.\d+/'
+  script:
+    - tar -czvf $CI_COMMIT_TAG.tar.gz artifacts/
+    - curl -v -u $NEXUS_USERNAME:$NEXUS_PASSWORD --upload-file $CI_COMMIT_TAG.tar.gz $NEXUS_URL/repository/maven-releases/frontend/front/$CI_COMMIT_TAG/front-$CI_COMMIT_TAG.tar.gz
+  artifacts:
+    paths:
+      - artifacts/
+  dependencies:
+    - build
+
+
+deploy:
+  stage: deploy
+  image: geerlingguy/docker-debian10-ansible
+  rules:
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_TAG =~ /^d+\.\d+\.\d+/'
+  script:
+    - apt-get install -y sshpass
+    - ansible-playbook -i /etc/ansible/inventories/local/hosts /etc/ansible/playbooks/deploy_front.yml -e version=$CI_COMMIT_TAG -e artifact_id=front
+  tags:
+    - ansible-front
+
+revert_version:
+  stage: revert_version
+  image: geerlingguy/docker-debian10-ansible
+  rules:
+    - when: manual
+  script:
+    - apt-get install -y sshpass
+    - ansible-playbook -i /etc/ansible/inventories/local/hosts /etc/ansible/playbooks/revert_front.yml
+  tags:
+    - ansible-front
