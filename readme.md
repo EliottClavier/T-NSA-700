@@ -1,16 +1,38 @@
-## README: Installing Vagrant, VirtualBox and Using `vagrant up` and `vagrant ssh`
+# T-NSA-700
+
+## Summary
+
+- [Contributors](#contributors)
+- [Local VMs with Vagrant](#installing-vagrant-virtualbox-and-using-vagrant-up-and-vagrant-ssh)
+    - [Prerequisites](#prerequisites)
+    - [Installing Vagrant and VirtualBox](#installing-vagrant-and-virtualbox)
+    - [Configuring Virtual Machines](#configuring-virtual-machines)
+    - [Starting a Virtual Machine](#starting-a-virtual-machine)
+    - [Logging into a Virtual Machine](#logging-into-a-virtual-machine)
+    - [Environment setup](#environment-setup)
+    - [Conclusion](#conclusion)
+- [Gitlab Registration and Deployment Guide](#gitlab-registration-and-deployment-guide)
+    - [Registration](#registration)
+    - [Deployment](#deployment)
+    - [Rollback](#rollback)
+        - [To the previous version](#rollback-to-the-previous-version)
+        - [To a specific version](#rollback-to-a-specific-version)
+    - [Conclusion](#conclusion)
+
+## Contributors
+
+Our team is composed of:
+- CLAVIER Eliott
+- PIGNON Nathan
+- MATHÉ Clément
+- RIPAULT Paul
+- MARTIN Maxime
+
+## Installing Vagrant, VirtualBox and Using `vagrant up` and `vagrant ssh`
 
 ### Introduction
 
 Vagrant is a tool used for building and managing virtual machine environments. In this guide, we will walk you through the process of installing Vagrant and a virtual box, and using the `vagrant up` and `vagrant ssh` commands to start and log into a virtual machine.
-
-### Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [Installing Vagrant and VirtualBox](#installing-vagrant-and-virtualbox)
-- [Configuring Virtual Machines](#configuring-virtual-machines)
-- [Starting a Virtual Machine](#starting-a-virtual-machine)
-- [Logging into a Virtual Machine](#logging-into-a-virtual-machine)
 
 ### Prerequisites
 
@@ -55,6 +77,10 @@ These command will use the configuration specified in your `Vagrantfile` to star
 Replace <vm_name> with the name of the virtual machine that you have specified in the config.yaml file.
 This will open a secure shell connection to the virtual machine.
 
+### Environment setup
+After the virtual machine (VM) supporting the Gitlab deployment runner is executed, run the following command in the terminal: 
+
+ansible-playbook -i /etc/ansible/inventories/local/hosts /etc/ansible/playbooks/setup.yml
 
 ### Conclusion
 
@@ -64,13 +90,6 @@ With these steps, you should now have a basic understanding of how to install Va
 
 ### Introduction
 This guide is designed for developers who need to use the Gitlab server (https://gitlab.epitech-projects.me) for their projects. The server has been configured with a few necessary steps to follow in order to register and deploy your applications. 
-
-### Table of Contents
-
-- [Registration](#registration)
-- [Deployment](#deployment)
-- [Additional Steps](#additional-steps)
-- [Rollback](#rollback)
 
 ### Registration
 1. Create an account on the Gitlab server using an email address ending in @epitech.eu. 
@@ -82,13 +101,11 @@ This guide is designed for developers who need to use the Gitlab server (https:/
 2. To deploy your application, create a release based on a tag named following the expression `/^d+\.\d+\.\d+/` (like "4.2.3"). The CD jobs in the pipeline will then send the build artifacts to the Nexus server (nexus.epitech-projects.me).
 4. The Ansible playbook will retrieve the artifacts and deploy the application to the configured hosts.
 
-### Additional Steps
-After the virtual machine (VM) supporting the Gitlab deployment runner is executed, run the following command in the terminal: 
-
-ansible-playbook -i /etc/ansible/inventories/local/hosts /etc/ansible/playbooks/setup.yml
-
-### Rollback
+### Rollback to the previous version
 To revert to a previous version, manually trigger the last job in the release pipeline.
+
+### Rollback to a specific version
+To revert to a specific version, manually remove the release of the desired target version. Then, create a branch from the code present in the desired tag, then make a release from this branch.
 
 ### Conclusion
 This guide has provided a comprehensive explanation of the steps necessary to register and deploy your application on the Gitlab server. If you have any questions or issues, please reach out to the admin team for support.
