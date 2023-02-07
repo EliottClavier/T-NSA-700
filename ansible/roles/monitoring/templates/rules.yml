@@ -2,7 +2,7 @@ groups:
 - name: vm_metrics
   rules:
   - record: vm_cpu_utilization
-    expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)
+    expr: 100 * avg by (instance) (rate(node_cpu_seconds_total{mode!="idle"}[1m]))
 
   - record: vm_memory_usage
     expr: 100 * (1 - ((avg_over_time(node_memory_MemFree_bytes[1m]) + avg_over_time(node_memory_Cached_bytes[1m]) + avg_over_time(node_memory_Buffers_bytes[1m])) / avg_over_time(node_memory_MemTotal_bytes[1m])))
