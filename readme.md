@@ -4,11 +4,13 @@
 
 - [Contributors](#contributors)
 - [First Steps](#first-steps)
-- [Local VMs with Vagrant](#local-vms-with-Vagrant)
     - [Prerequisites](#prerequisites)
     - [Installing Vagrant and VirtualBox](#installing-vagrant-and-virtualbox)
     - [Configuring Virtual Machines](#configuring-virtual-machines)
-    - [Starting a Virtual Machine](#starting-a-virtual-machine)
+    - [Configuring Ansible secret](#configuring-ansible-secret)
+        - [Vault_pass](#vault_pass)
+        - [Vault](#vault)
+    - [Starting a Virtual Machine](#starting-a-virtual-machine)    
     - [Logging into a Virtual Machine](#logging-into-a-virtual-machine)
     - [Environment setup](#environment-setup)
     - [Conclusion](#conclusion)
@@ -49,23 +51,23 @@ Before you start, you will need to have the following installed on your computer
 ### Configuring Virtual Machines
 
 The names and IP addresses of the virtual machines are defined in a `vagrant/config.yml` file. You must create it. To do this : 
-- In "vagrant" folder, rename `example.config.yml` in `config.yml` 
+- In "vagrant" folder, use `example.config.yml` template to create a `config.yml` file
 - Open the file and complete the IP addresses of the virtual machines.
-- Indicate true to the `main_vm` parms to get a Vm with Ansible on it ( in the template the VM called "terminal" has this option)
+- Indicate true to the `main_vm` parms to get a Vm with Ansible on it ( in the template, the VM called "terminal" has this option to true)
 
 ### Configuring Ansible secret
 
-## vault_pass
+#### Vault_pass
 
 You must define a password in root_pass.txt. To do this :
-- In /ansible, rename the `example.vault_pass.txt` file to `vault_pass.txt`
-- Write your password inside the file
+- In /ansible, use the `example.vault_pass.txt` template to create file to create a `vault_pass.txt` file
+- Write a password of your choice inside the file
 
-## vault
+#### Vault
 
 You must define parms in vault.yml To do this :
-- In /ansible, rename the `example.vault.yml` file to `vault.yml`
-- Define a configuration.
+- In /ansible, use the `example.vault.yml` template file to create a `vault.yml` file.
+- Define a configuration. (refer to comments in it or keys name)
 
 ### Starting a Virtual Machine
 
