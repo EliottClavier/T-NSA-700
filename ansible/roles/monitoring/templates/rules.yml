@@ -20,7 +20,7 @@ groups:
     expr: node_load1
   
   - record: vm_disk_space_usage
-    expr: 100 - node_filesystem_free_bytes{fstype!="tmpfs"} / node_filesystem_size_bytes{fstype!="tmpfs"} * 100
+    expr: 100 - node_filesystem_free_bytes{fstype!="tmpfs",device="/dev/sda1"} / node_filesystem_size_bytes{fstype!="tmpfs",device="/dev/sda1"} * 100
   
   - record: vm_running_processes
     expr: process_total

@@ -265,6 +265,7 @@
           "color": {
             "mode": "thresholds"
           },
+          "decimals": 1,
           "mappings": [],
           "max": 1,
           "min": 0,
@@ -336,10 +337,10 @@
           },
           "decimals": 1,
           "mappings": [],
-          "max": 100,
+          "max": 1,
           "min": 0,
           "thresholds": {
-            "mode": "percentage",
+            "mode": "absolute",
             "steps": [
               {
                 "color": "green",
@@ -351,7 +352,7 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -470,6 +471,7 @@
           "color": {
             "mode": "thresholds"
           },
+          "decimals": 1,
           "mappings": [],
           "max": 100,
           "min": 0,
@@ -542,6 +544,6 @@
   "timezone": "",
   "title": "Front dashboard",
   "uid": "aUgHGsrZe",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
