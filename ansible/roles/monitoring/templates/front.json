@@ -68,7 +68,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS_FRONT}"
+        "uid": "Prometheus Front"
       },
       "fieldConfig": {
         "defaults": {
@@ -147,7 +147,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_FRONT}"
+            "uid": "Prometheus Front"
           },
           "editorMode": "builder",
           "expr": "sum(vm_network_transmit)",
@@ -163,7 +163,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS_FRONT}"
+        "uid": "Prometheus Front"
       },
       "fieldConfig": {
         "defaults": {
@@ -242,7 +242,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_FRONT}"
+            "uid": "Prometheus Front"
           },
           "editorMode": "builder",
           "expr": "sum(vm_network_receive)",
@@ -258,7 +258,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS_FRONT}"
+        "uid": "Prometheus Front"
       },
       "fieldConfig": {
         "defaults": {
@@ -312,7 +312,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_FRONT}"
+            "uid": "Prometheus Front"
           },
           "editorMode": "builder",
           "expr": "vm_load_average",
@@ -327,7 +327,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS_FRONT}"
+        "uid": "Prometheus Front"
       },
       "fieldConfig": {
         "defaults": {
@@ -381,7 +381,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_FRONT}"
+            "uid": "Prometheus Front"
           },
           "editorMode": "builder",
           "expr": "vm_cpu_utilization",
@@ -397,7 +397,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS_FRONT}"
+        "uid": "Prometheus Front"
       },
       "fieldConfig": {
         "defaults": {
@@ -448,7 +448,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_FRONT}"
+            "uid": "Prometheus Front"
           },
           "editorMode": "builder",
           "expr": "vm_memory_usage",
@@ -463,7 +463,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS_FRONT}"
+        "uid": "Prometheus Front"
       },
       "fieldConfig": {
         "defaults": {
@@ -514,7 +514,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_FRONT}"
+            "uid": "Prometheus Front"
           },
           "editorMode": "builder",
           "expr": "vm_disk_space_usage",
