@@ -3,7 +3,8 @@
 ## Summary
 
 - [Contributors](#contributors)
-- [Local VMs with Vagrant](#installing-vagrant-virtualbox-and-using-vagrant-up-and-vagrant-ssh)
+- [First Steps](#first-steps)
+- [Local VMs with Vagrant](#local-vms-with-Vagrant)
     - [Prerequisites](#prerequisites)
     - [Installing Vagrant and VirtualBox](#installing-vagrant-and-virtualbox)
     - [Configuring Virtual Machines](#configuring-virtual-machines)
@@ -28,11 +29,7 @@ Our team is composed of:
 - RIPAULT Paul
 - MARTIN Maxime
 
-## Installing Vagrant, VirtualBox and Using `vagrant up` and `vagrant ssh`
-
-### Introduction
-
-Vagrant is a tool used for building and managing virtual machine environments. In this guide, we will walk you through the process of installing Vagrant and a virtual box, and using the `vagrant up` and `vagrant ssh` commands to start and log into a virtual machine.
+## First Steps  
 
 ### Prerequisites
 
@@ -42,6 +39,7 @@ Before you start, you will need to have the following installed on your computer
 - VirtualBox, a free and open-source virtualization software
 - Vagrant, a tool for building and managing virtual machine environments
 
+
 ### Installing Vagrant and VirtualBox
 
 1. Download and install VirtualBox from the [VirtualBox website](https://www.virtualbox.org/wiki/Downloads).
@@ -49,8 +47,25 @@ Before you start, you will need to have the following installed on your computer
 2. Download and install Vagrant from the [Vagrant website](https://www.vagrantup.com/downloads.html).
 
 ### Configuring Virtual Machines
-The names and IP addresses of the virtual machines are defined in the vagrant/config.yaml file. 
-An example example.config.yaml is available and must be renamed in "config.yaml" and completed with the names and IP addresses of the virtual machines.
+
+The names and IP addresses of the virtual machines are defined in a `vagrant/config.yml` file. You must create it. To do this : 
+- In "vagrant" folder, rename `example.config.yml` in `config.yml` 
+- Open the file and complete the IP addresses of the virtual machines.
+- Indicate true to the `main_vm` parms to get a Vm with Ansible on it ( in the template the VM called "terminal" has this option)
+
+### Configuring Ansible secret
+
+## vault_pass
+
+You must define a password in root_pass.txt. To do this :
+- In /ansible, rename the `example.vault_pass.txt` file to `vault_pass.txt`
+- Write your password inside the file
+
+## vault
+
+You must define parms in vault.yml To do this :
+- In /ansible, rename the `example.vault.yml` file to `vault.yml`
+- Define a configuration.
 
 ### Starting a Virtual Machine
 
@@ -78,13 +93,16 @@ Replace <vm_name> with the name of the virtual machine that you have specified i
 This will open a secure shell connection to the virtual machine.
 
 ### Environment setup
-After the virtual machine (VM) supporting the Gitlab deployment runner is executed, run the following command in the terminal: 
 
-ansible-playbook -i /etc/ansible/inventories/local/hosts /etc/ansible/playbooks/setup.yml
+- Run the "terminal" vm or a vm with main_vm to true
+
+- After the virtual machine (VM) supporting the Gitlab deployment runner is executed, run the following command in the terminal: 
+
+    ansible-playbook -i /etc/ansible/inventories/local/hosts /etc/ansible/playbooks/setup.yml
 
 ### Conclusion
 
-With these steps, you should now have a basic understanding of how to install Vagrant and VirtualBox, start a virtual machine using a pre-existing `Vagrantfile`, and log into it using the specified credentials. You can now start using Vagrant to manage your virtual machine environments.
+The local environnement is now set up
 
 ## Gitlab Registration and Deployment Guide
 
