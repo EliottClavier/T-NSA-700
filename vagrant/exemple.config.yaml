@@ -1,0 +1,35 @@
+configs:   
+
+  back:
+    name: "back"
+    ip: ""
+    memory: 1024
+    cpus: 2
+    main_vm: false
+ 
+    
+  front:
+    name: "front"
+    ip: ""
+    memory: 1024
+    cpus: 2
+    main_vm: false
+
+  db:
+    name: "db"
+    ip: ""
+    memory: 1024
+    cpus: 2
+    main_vm: false
+
+  terminal:
+    name: "terminal"
+    ip: "" 
+    memory: 8192 
+    cpus: 2
+    main_vm: true
+
+vars:
+  box: "debian/bullseye64"  
+  runner_register_token: ""
+  gitlab_server_url: ""

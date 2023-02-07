@@ -1,0 +1,72 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'yaml'
+
+# Get config.yaml file 
+current_dir    = File.dirname(File.expand_path(__FILE__))
+configs        = YAML.load_file("#{current_dir}/config.yaml")
+
+# Create vms object config
+VAGRANT_VMS = []
+configs['configs'].each do |key, value|
+    VAGRANT_VMS << { name: value['name'], ip: value['ip'], memory: value['memory'], cpus: value['cpus'], main: value['main_vm'] } 
+end
+
+REGISTRATION_TOKEN = configs['vars']['runner_register_token']
+GITLAB_SERVER_URL = configs['vars']['gitlab_server_url']
+  
+Vagrant.configure("2") do |config|
+ 
+  #Provisioning default config and software  
+  config.vm.provision "shell", path: "scripts/install_tools.sh"
+  config.vm.provision "shell", path: "scripts/config_ssh.sh"
+       
+  # Iteration of each VM
+  VAGRANT_VMS.each do |server|
+
+    # Get VM config
+    vm_name = server[:name]
+    vm_ip = server[:ip]
+    vm_memory = server[:memory]
+    vm_cpu = server[:cpus]
+    is_vm_main = server[:main]
+
+    # Create a new VM
+    config.vm.define vm_name do |node|  
+
+    # Define the Box used
+    node.vm.box = configs['vars']['box']
+
+    # Provisioning on vm1 only
+    if is_vm_main
+
+      # Provisioning docker
+      node.vm.provision "shell", path: "scripts/install_docker.sh"
+      # Provisioning ansible
+      node.vm.provision "shell", path: "scripts/install_ansible.sh"
+      # Provisioning ansible folder in /etc
+      node.vm.provision "file", source: "../ansible", destination: "/tmp/ansible"
+      node.vm.provision "shell", path: "scripts/transfer_ansible.sh"
+      # Provisioning Gitlab-Runner
+      node.vm.provision "shell", env: { "PROJECT_REGISTRATION_TOKEN" => REGISTRATION_TOKEN, "PROJECT_GITLAB_SERVER_URL"=> GITLAB_SERVER_URL }, path: "scripts/install_runner.sh"
+    end
+            
+    node.vm.provider "virtualbox" do |vb|
+      # VM name
+      vb.name = "#{vm_name}_NSA_5"
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = true
+      # Amount of memory and core on the VM:
+      vb.memory = vm_memory
+      vb.cpus = vm_cpu
+      end
+
+      # Create a private network using a specific IP.
+      node.vm.hostname = vm_name
+      node.vm.network "private_network", ip: vm_ip 
+    end
+   
+  end
+  
+end

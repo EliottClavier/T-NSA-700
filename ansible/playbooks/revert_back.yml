@@ -1,0 +1,29 @@
+- name: Revert back
+  hosts: back_servers
+  become: true
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - name: Read prev_version.txt
+      shell: cat /data/prev_version.txt
+      register: prev_version
+
+    - include_role:
+        name: back
+        tasks_from: revert.yml
+      when: prev_version.stdout != ""
+
+- name: Revert database
+  hosts: database_servers
+  become: true
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - name: Read prev_version.txt
+      shell: cat /data/prev_version.txt
+      register: prev_version
+
+    - include_role:
+        name: database
+        tasks_from: revert.yml
+      when: prev_version.stdout != ""

@@ -1,0 +1,6 @@
+ansible_connection: ssh
+ansible_user: "{{ vault_ansible_user }}"
+ansible_ssh_pass: "{{ vault_ansible_password }}"
+ansible_python_interpreter: /usr/bin/python3
+nexus_server_address: "{{ vault_nexus_server_address }}"
+nexus_server_port: "{{ vault_nexus_server_port }}"

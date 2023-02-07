@@ -1,0 +1,88 @@
+image: php:7.4-fpm
+
+stages:
+  - build
+  - test
+  - send_artifact
+  - deploy
+  - revert_version
+
+before_script:
+  - apt-get update -y
+  - apt-get install -y libzip-dev
+  - docker-php-ext-install zip
+  - apt-get install -y zip
+  - apt-get install -y rsync
+  - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  - php composer-setup.php
+  - php -r "unlink('composer-setup.php');"
+  - mv composer.phar /usr/local/bin/composer
+  - composer update
+  - composer install --no-interaction --prefer-dist
+
+
+build:
+  stage: build
+  script:
+  - mkdir -p artifacts/
+  - cp .env.example .env
+  - php artisan key:generate
+  - php artisan config:cache
+  - php artisan route:clear
+  - php artisan view:clear
+  - php artisan storage:link
+  - php artisan vendor:publish --tag=public --force
+  - php artisan event:cache
+  - chown -R $USER:$USER .
+  - rsync -av --exclude=artifacts ./* artifacts/
+  artifacts:
+    paths:
+    - artifacts/
+
+test:
+  stage: test
+  script:
+  - vendor/bin/phpunit
+
+send_artifact:
+  stage: send_artifact
+  rules:
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_TAG =~ /^d+\.\d+\.\d+/'
+  script:
+    - tar -czvf $CI_COMMIT_TAG.tar.gz artifacts/
+    - curl -v -u $NEXUS_USERNAME:$NEXUS_PASSWORD --upload-file $CI_COMMIT_TAG.tar.gz $NEXUS_URL/repository/maven-releases/backend/back/$CI_COMMIT_TAG/back-$CI_COMMIT_TAG.tar.gz
+  artifacts:
+    paths:
+      - artifacts/
+
+deploy:
+  stage: deploy
+  rules:
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_TAG =~ /^d+\.\d+\.\d+/'
+  script:
+    - apt-get install -y software-properties-common --force-yes
+    - apt-add-repository --yes ppa:ansible/ansible
+    - apt-get install -y ansible git --force-yes
+    - apt-get install -y sshpass 
+    - ansible-playbook -i /etc/ansible/inventories/local/hosts /etc/ansible/playbooks/deploy_back.yml -e version=$CI_COMMIT_TAG -e artifact_id=back
+  dependencies: 
+    - send_artifact
+  tags: 
+    - deployment
+
+revert_version:
+  stage: revert_version
+  rules:
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_TAG =~ /^d+\.\d+\.\d+/'
+    - when: manual
+  script:
+    - apt-get install -y software-properties-common --force-yes
+    - apt-add-repository --yes ppa:ansible/ansible
+    - apt-get install -y ansible git --force-yes
+    - apt-get install -y sshpass 
+    - ansible-playbook -i /etc/ansible/inventories/local/hosts /etc/ansible/playbooks/revert_back.yml
+  tags:
+    - deployment

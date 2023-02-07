@@ -1,0 +1,12 @@
+- name: Reboot all servers
+  hosts: 
+    - front_servers
+    - back_servers
+    - database_servers
+  become: true
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - include_role:
+        name: common
+        tasks_from: reboot.yml

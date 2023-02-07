@@ -1,0 +1,10 @@
+- name: Check known_hosts for {{ ansible_host }}
+  local_action: shell ssh-keygen -F {{ ansible_host }}
+  register: has_entry_in_known_hosts_file
+  changed_when: false
+  ignore_errors: true
+
+- name: Ignore host key for {{ ansible_host }} on first run
+  when: has_entry_in_known_hosts_file.rc == 1
+  set_fact:
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no"

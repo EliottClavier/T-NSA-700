@@ -1,0 +1,11 @@
+- name: Deploy front
+  hosts: front_servers
+  vars:
+    artifact_id: "{{ artifact_id }}"
+    version: "{{ version }}"
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - include_role:
+        name: front
+        tasks_from: deploy_stack.yml

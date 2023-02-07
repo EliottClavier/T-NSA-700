@@ -1,0 +1,11 @@
+[front_servers]
+front_server
+
+[back_servers]
+back_server
+
+[database_servers]
+database_server
+
+[terminal_servers]
+terminal_server
