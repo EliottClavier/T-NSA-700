@@ -58,7 +58,7 @@ deploy:
     - apt-get install -y sshpass
     - ansible-playbook -i /etc/ansible/inventories/local/hosts /etc/ansible/playbooks/deploy_front.yml -e version=$CI_COMMIT_TAG -e artifact_id=front
   tags:
-    - ansible-front
+    - deployment
 
 revert_version:
   stage: revert_version
@@ -69,4 +69,4 @@ revert_version:
     - apt-get install -y sshpass
     - ansible-playbook -i /etc/ansible/inventories/local/hosts /etc/ansible/playbooks/revert_front.yml
   tags:
-    - ansible-front
+    - deployment

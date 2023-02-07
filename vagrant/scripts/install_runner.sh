@@ -41,7 +41,7 @@ sudo gitlab-runner register \
   --description "docker-runner" \
   --description "deployment-runner" \
   --maintenance-note "Deployment runner" \
-  --tag-list "ansible" \
+  --tag-list "deployment" \
   --run-untagged="false"
 
 fi
