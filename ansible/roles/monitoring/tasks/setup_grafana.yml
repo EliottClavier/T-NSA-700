@@ -48,6 +48,7 @@
     group: grafana
     mode: 0640
 
+
 - name: Transfer Grafana dashboards
   template:
     src: "{{ item }}"
@@ -59,9 +60,6 @@
     - back.json
     - front.json
     - database.json
-
-- name: Enable automatic restart of grafana-server
-  command: systemctl enable grafana-server
 
 - name: Restart Grafana
   service:
