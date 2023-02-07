@@ -51,7 +51,7 @@ Before you start, you will need to have the following installed on your computer
 The names and IP addresses of the virtual machines are defined in a `vagrant/config.yml` file. You must create it. To do this : 
 - In "vagrant" folder, rename `example.config.yml` in `config.yml` 
 - Open the file and complete the IP addresses of the virtual machines.
-- Indicate true to the `main_vm` parms to get a Vm with Ansible on it ( in the template the VM called "terminal" has this option)
+- Indicate true to the `main_vm` parms to get a Vm with Ansible on it ( in the template, the VM called "terminal" has this option)
 
 ### Configuring Ansible secret
 
@@ -59,7 +59,7 @@ The names and IP addresses of the virtual machines are defined in a `vagrant/con
 
 You must define a password in root_pass.txt. To do this :
 - In /ansible, rename the `example.vault_pass.txt` file to `vault_pass.txt`
-- Write your password inside the file
+- Write a password of your choice inside the file
 
 ## vault
 
