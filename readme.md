@@ -6,8 +6,10 @@
 - [First Steps](#first-steps)
     - [Prerequisites](#prerequisites)
     - [Installing Vagrant and VirtualBox](#installing-vagrant-and-virtualbox)
-    - [Configuring Virtual Machines](#configuring-virtual-machines)*
-    - [Configuring Ansible secret] (#configuring-ansible-secret)
+    - [Configuring Virtual Machines](#configuring-virtual-machines)
+    - [Configuring Ansible secret](#configuring-ansible-secret)
+        - [Vault_pass](#vault_pass)
+        - [Vault](#vault)
     - [Starting a Virtual Machine](#starting-a-virtual-machine)    
     - [Logging into a Virtual Machine](#logging-into-a-virtual-machine)
     - [Environment setup](#environment-setup)
