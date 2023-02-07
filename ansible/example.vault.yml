@@ -10,14 +10,16 @@ vault_front_server_ip:
 vault_back_server_ip:
 vault_database_server_ip:
 vault_terminal_server_ip:
-# Back .env variables
+# Back .env variables (APP_KEY in .env of back)
 vault_back_app_key:
+
 # 3306 is the default port
 vault_back_db_port:
-# Database .env variables
+# Database variables that configure mariadb server
 vault_db_database:
 vault_db_username:
 vault_db_password:
-# Grafana admin password
+
+# Grafana admin password ( your choice )
 vault_grafana_username:
 vault_grafana_password:
