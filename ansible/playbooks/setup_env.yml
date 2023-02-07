@@ -1,0 +1,29 @@
+- name: Setup front
+  hosts: front_servers
+  become: true
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - include_role:
+        name: front
+        tasks_from: setup.yml
+
+- name: Setup database
+  hosts: database_servers
+  become: true
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - include_role:
+        name: database
+        tasks_from: setup.yml
+
+- name: Setup back
+  hosts: back_servers
+  become: true
+  vars_files:
+    - /etc/ansible/vault.yml
+  tasks:
+    - include_role:
+        name: back
+        tasks_from: setup.yml

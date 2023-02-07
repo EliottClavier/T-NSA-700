@@ -8,6 +8,7 @@ vault_nexus_server_port:
 vault_front_server_ip:
 vault_back_server_ip:
 vault_database_server_ip:
+vault_terminal_server_ip:
 # Back .env variables
 vault_back_app_key:
 vault_back_db_port:
@@ -15,3 +16,6 @@ vault_back_db_port:
 vault_db_database:
 vault_db_username:
 vault_db_password:
+# Grafana admin password:
+vault_grafana_username:
+vault_grafana_password:

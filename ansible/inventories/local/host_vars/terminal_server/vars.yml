@@ -1,0 +1,6 @@
+ansible_host: "{{ vault_terminal_server_ip }}"
+front_server_ip: "{{ vault_front_server_ip }}"
+back_server_ip: "{{ vault_back_server_ip }}"
+database_server_ip: "{{ vault_database_server_ip }}"
+grafana_username: "{{ vault_grafana_username }}"
+grafana_password: "{{ vault_grafana_password }}"

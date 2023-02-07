@@ -1,0 +1,62 @@
+- name: Add Grafana repository to the sources list
+  apt_repository:
+    repo: 'deb https://packages.grafana.com/oss/deb stable main'
+    state: present
+    update_cache: yes
+
+- name: Update APT
+  command: apt update
+
+- name: Install Grafana
+  package:
+    name: grafana
+    state: present
+
+- name: Start and enable Grafana
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- name: Configure Grafana
+  template:
+    src: grafana.ini
+    dest: /etc/grafana/grafana.ini
+    owner: grafana
+    group: grafana
+    mode: 0640
+
+- name: Transfer Grafana datasources
+  template:
+    src: datasource.yml
+    dest: /etc/grafana/provisioning/datasources/datasource.yml
+    owner: grafana
+    group: grafana
+    mode: 0640
+
+- name: Transfer Grafana dashboard configuration
+  template:
+    src: dashboard.yml
+    dest: /etc/grafana/provisioning/dashboards/dashboard.yml
+    owner: grafana
+    group: grafana
+    mode: 0640
+
+
+- name: Transfer Grafana dashboards
+  template:
+    src: "{{ item }}"
+    dest: /etc/grafana/provisioning/dashboards/{{ item }}
+    owner: grafana
+    group: grafana
+    mode: 0640
+  with_items:
+    - back.json
+    - front.json
+    - database.json
+
+- name: Restart Grafana
+  service:
+    name: grafana-server
+    state: restarted
+    enabled: yes

@@ -1,5 +1,8 @@
 - name: Reboot all servers
-  hosts: all
+  hosts: 
+    - front_servers
+    - back_servers
+    - database_servers
   become: true
   vars_files:
     - /etc/ansible/vault.yml

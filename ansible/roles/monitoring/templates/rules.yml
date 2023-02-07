@@ -1,0 +1,26 @@
+groups:
+- name: vm_metrics
+  rules:
+  - record: vm_cpu_utilization
+    expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)
+
+  - record: vm_memory_usage
+    expr: 100 * (1 - ((avg_over_time(node_memory_MemFree_bytes[1m]) + avg_over_time(node_memory_Cached_bytes[1m]) + avg_over_time(node_memory_Buffers_bytes[1m])) / avg_over_time(node_memory_MemTotal_bytes[1m])))
+  
+  - record: vm_disk_io
+    expr: (rate(node_disk_io_time_seconds_total{device="sda"}[1m]))
+  
+  - record: vm_network_receive
+    expr: rate(node_network_receive_bytes_total[1m]) / 100000
+
+  - record: vm_network_transmit
+    expr: rate(node_network_transmit_bytes_total[1m]) / 100000
+  
+  - record: vm_load_average
+    expr: node_load1
+  
+  - record: vm_disk_space_usage
+    expr: 100 - node_filesystem_free_bytes{fstype!="tmpfs"} / node_filesystem_size_bytes{fstype!="tmpfs"} * 100
+  
+  - record: vm_running_processes
+    expr: process_total
