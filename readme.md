@@ -3,6 +3,7 @@
 ## Summary
 
 - [Contributors](#contributors)
+- [Introduction](#introduction)
 - [First Steps](#first-steps)
     - [Prerequisites](#prerequisites)
     - [Installing Vagrant and VirtualBox](#installing-vagrant-and-virtualbox)
@@ -30,6 +31,18 @@ Our team is composed of:
 - MATHÉ Clément
 - RIPAULT Paul
 - MARTIN Maxime
+
+## Introduction
+
+This project aims to create an agile DevOps environment, allowing a team of developers to practice Agile development processes, and continuous product delivery.
+
+To do this, we set up a Gitlab environment to manage the code, and provide a runner to execute the different pipelines. With its release system, developers can trigger the deployment of their applications from the Gitlab interface.
+
+The deployment can be configured on different environments, but for this project we configured virtual machines using Vagrant. One of them embeds a Gitlab runner, allowing to execute the deployment on the other machines in local environment.
+
+Ansible playbooks will then be executed from this deployment virtual machine, to install the necessary services, and then when a deployment is triggered, to retrieve the build artifacts from our Nexus server (http://nexus.epitech-projects.me:8081/) to make the applications available.
+
+With this project, we ensure an Agile product development cycle, for the team of developers for whom it is intended.
 
 ## First Steps  
 
