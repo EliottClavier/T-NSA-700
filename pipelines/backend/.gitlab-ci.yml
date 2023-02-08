@@ -75,8 +75,6 @@ deploy:
 revert_version:
   stage: revert_version
   rules:
-    - if: '$CI_COMMIT_TAG'
-    - if: '$CI_COMMIT_TAG =~ /^d+\.\d+\.\d+/'
     - when: manual
   script:
     - apt-get install -y software-properties-common --force-yes
@@ -86,3 +84,6 @@ revert_version:
     - ansible-playbook -i /etc/ansible/inventories/local/hosts /etc/ansible/playbooks/revert_back.yml
   tags:
     - deployment
+
+
+
