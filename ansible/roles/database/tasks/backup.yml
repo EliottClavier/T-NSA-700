@@ -8,14 +8,7 @@
 
 - name: Do a last backup for the new previous version
   shell: mysqldump -u{{ db_username }} -p{{ db_password }} {{ db_database }} > /data/backups/{{ db_database }}-{{ current_version.stdout }}.sql
-  when: current_version
-
-- name: Tag the previous version
-  shell: echo {{ current_version.stdout }} > /data/prev_version.txt 
-  when: current_version.stdout and current_version.stdout != prev_version.stdout and current_version.stdout != "{{ version }}"
-
-- name: Tag the current version
-  shell: echo {{ version }} > /data/current_version.txt 
+  when: current_version.stdout
 
 - name: Restart MariaDB
   service:
