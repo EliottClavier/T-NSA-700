@@ -6,6 +6,10 @@
   shell: cat /data/current_version.txt
   register: current_version
 
+- name: Do a last backup for the new previous version
+  shell: mysqldump -u{{ db_username }} -p{{ db_password }} {{ db_database }} > /data/backups/{{ db_database }}-{{ current_version.stdout }}.sql
+  when: current_version.stdout
+
 - name: Revert database to the state it was in previous version
   shell: mysql -u{{ db_username }} -p{{ db_password }} {{ db_database }} < /data/backups/{{ db_database }}-{{ prev_version.stdout }}.sql
 

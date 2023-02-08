@@ -1,0 +1,6 @@
+- name: Tag the previous version
+  shell: echo {{ current_version.stdout }} > /data/prev_version.txt 
+  when: current_version.stdout and current_version.stdout != prev_version.stdout and current_version.stdout != "{{ version }}"
+
+- name: Tag the current version
+  shell: echo {{ version }} > /data/current_version.txt 
